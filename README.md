@@ -1,16 +1,43 @@
-# React + Vite
+# 🔐 Password Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack password manager built with **React, Tailwind CSS, Express.js, and MongoDB**.
 
-Currently, two official plugins are available:
+This project allows users to securely manage and organize their saved credentials through a clean and responsive web interface. It was built as a full-stack development project to practice frontend development, REST APIs, database integration, and CRUD operations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> ⚠️ **Note:** This project is intended for learning and portfolio purposes. Do not use it to store real or sensitive passwords unless the application's security has been properly implemented and independently reviewed.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Features
 
-## Expanding the ESLint configuration
+- 🔐 Add and manage saved credentials
+- ✏️ Edit existing credentials
+- 🗑️ Delete saved credentials
+- 👁️ Show/hide password fields
+- 📋 Copy credentials easily
+- 🔎 Search and manage saved entries
+- 📱 Responsive user interface
+- ⚡ Fast and interactive React frontend
+- 🗄️ MongoDB database integration
+- 🔌 RESTful API using Express.js
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- Tailwind CSS
+- JavaScript
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+
+### Development Tools
+- Git
+- GitHub
+- VS Code
