@@ -7,12 +7,13 @@ const Navbar = () => {
         <span className="text-green-600">&lt;</span>
         Pass
         <span className="text-green-600">Man/&gt;</span>
-        </div>
-      <ul className="nav-links text-lg font-semibold flex gap-7">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/contact">Contact</a></li>
-      </ul>
+      </div>
+      <div className="text-lg font-semibold flex gap-7">
+          <button className='flex cursor-pointer font-bold items-center justify-center gap-2 bg-white text-black p-2 px-3 rounded-xl'>
+            <img src="/icons/github.svg" alt="github" className='invert w-7' />
+            <span>GitHub</span>
+          </button>
+      </div>
     </nav>
   )
 }
