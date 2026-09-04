@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/Navbar'
 import Manager from './components/Manager'
 import BackgroundVideo from './assets/background/Gradient.mp4'
+import Footer from './components/Footer'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,6 +20,7 @@ function App() {
     ></video>
       <Navbar/>
       <Manager/>
+      <Footer/>
     </>
   )
 }
