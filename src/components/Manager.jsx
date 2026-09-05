@@ -1,6 +1,29 @@
 import { useRef, useState, useEffect } from 'react'
 import { Player } from '@lordicon/react'
 import ICON from '../assets/icons/add.json'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+
+const CopyAnimation = () => {
+  const copyPlayerRef = useRef(null)
+
+  const playCopyAnimation = () => {
+    copyPlayerRef.current?.play()
+  }
+
+  return (
+    <DotLottieReact
+      src="/icons/Copy.lottie"
+      tabIndex={0}
+      aria-label="Copy password"
+      dotLottieRefCallback={(dotLottie) => {
+        copyPlayerRef.current = dotLottie
+      }}
+      onMouseEnter={playCopyAnimation}
+      onFocus={playCopyAnimation}
+      style={{ width: '38px', height: '38px', cursor: 'pointer' }}
+    />
+  )
+}
 
 const Manager = () => {
   const ref = useRef()
@@ -39,6 +62,10 @@ const Manager = () => {
   const handleChange = (e) => {
     setform({ ...form, [e.target.name]: e.target.value })
     ref.current.src = "icons/view.png"
+  }
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text)
   }
 
   return (
@@ -92,10 +119,10 @@ const Manager = () => {
               </thead>
               <tbody className='text-white text-center'>
                 {passwordArray.map((item, index) => (
-                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-900 opacity-80' : 'bg-black opacity-80'}>
-                    <td className='underline p-3'><a href={item.site}>{item.site}</a></td>
-                    <td className=' p-3'>{item.username}</td>
-                    <td className=' p-3'>{item.password}</td>
+                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-900 opacity-80 overflow-hidden h-12' : 'bg-black opacity-80 overflow-hidden h-12'}>
+                    <td className=' underline p-3 relative'><div className='flex justify-center items-center'><a href={item.site}>{item.site}</a><span onClick={() => copyToClipboard(item.site)} className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
+                    <td className=' p-3'><div className='flex justify-center items-center'> {item.username}<span onClick={() => copyToClipboard(item.username)} className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
+                    <td className=' p-3'><div className='flex justify-center items-center'>{item.password}<span onClick={() => copyToClipboard(item.password)} className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
                   </tr>
                 ))}
               </tbody>
