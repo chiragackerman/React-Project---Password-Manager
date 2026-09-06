@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { Player } from '@lordicon/react'
 import ICON from '../assets/icons/add.json'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import { ToastContainer, toast } from 'react-toastify';
 
 const CopyAnimation = () => {
   const copyPlayerRef = useRef(null)
@@ -65,11 +66,35 @@ const Manager = () => {
   }
 
   const copyToClipboard = (text) => {
+    toast('Copied to clipboard!', {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
     navigator.clipboard.writeText(text)
   }
 
   return (
     <div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+        transition="Bounce"
+      />
+      <ToastContainer />
       <div className="heading">
         <h1 className='text-3xl tracking-wider font-bold text-center my-4'>PassMan - Your Own Password Manager</h1>
       </div>
@@ -112,17 +137,17 @@ const Manager = () => {
             <table className=' rounded-xl overflow-hidden border-collapse table-fixed text-lg border w-full border-gray-500'>
               <thead>
                 <tr className='bg-black opacity-80 text-white'>
-                  <th className=' p-3 w-2/4'>Site</th>
-                  <th className=' p-3 w-1/4'>Username</th>
-                  <th className=' p-3 w-1/4'>Password</th>
+                  <th className=' p-3 w-4/9'>Site</th>
+                  <th className=' p-3 w-2/9'>Username</th>
+                  <th className=' p-3 w-2/9'>Password</th>
                 </tr>
               </thead>
               <tbody className='text-white text-center'>
                 {passwordArray.map((item, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-900 opacity-80 overflow-hidden h-12' : 'bg-black opacity-80 overflow-hidden h-12'}>
-                    <td className=' underline p-3 relative'><div className='flex justify-center items-center'><a href={item.site}>{item.site}</a><span onClick={() => copyToClipboard(item.site)} className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
-                    <td className=' p-3'><div className='flex justify-center items-center'> {item.username}<span onClick={() => copyToClipboard(item.username)} className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
-                    <td className=' p-3'><div className='flex justify-center items-center'>{item.password}<span onClick={() => copyToClipboard(item.password)} className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
+                    <td className=' underline p-3 relative'><div className='flex justify-center items-center'><a href={item.site}>{item.site}</a><span onClick={() => copyToClipboard(item.site)} aria-label='Copy' className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
+                    <td className=' p-3'><div className='flex justify-center items-center'> {item.username}<span onClick={() => copyToClipboard(item.username)} aria-label='Copy' className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
+                    <td className=' p-3'><div className='flex justify-center items-center'>{item.password}<span onClick={() => copyToClipboard(item.password)} aria-label='Copy' className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
                   </tr>
                 ))}
               </tbody>
