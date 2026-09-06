@@ -1,8 +1,11 @@
 import { useRef, useState, useEffect } from 'react'
 import { Player } from '@lordicon/react'
-import ICON from '../assets/icons/add.json'
+import ADD_ICON from '../assets/icons/add.json'
+import EDIT_ICON from '../assets/icons/Edit.json'
+import DELETE_ICON from '../assets/icons/Delete.json'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
-import { ToastContainer, toast } from 'react-toastify';
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CopyAnimation = () => {
   const copyPlayerRef = useRef(null)
@@ -26,10 +29,23 @@ const CopyAnimation = () => {
   )
 }
 
+const AnimatedPlayer = ({ icon, size }) => {
+  const playerRef = useRef(null)
+
+  const playAnimation = () => {
+    playerRef.current?.playFromBeginning()
+  }
+
+  return (
+    <span className="cursor-pointer" tabIndex={0} onMouseEnter={playAnimation} onFocus={playAnimation}>
+      <Player ref={playerRef} icon={icon} size={size} />
+    </span>
+  )
+}
+
 const Manager = () => {
   const ref = useRef()
   const passwordRef = useRef()
-  const playerRef = useRef(null)
 
   const [form, setform] = useState({ site: "", username: "", password: "" })
   const [passwordArray, setpasswordArray] = useState([])
@@ -58,6 +74,16 @@ const Manager = () => {
     localStorage.setItem("passwords", JSON.stringify([...passwordArray, form]))
     console.log([...passwordArray, form])
     setform({ site: "", username: "", password: "" })
+    toast.success('Password Saved!', {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   }
 
   const handleChange = (e) => {
@@ -79,6 +105,34 @@ const Manager = () => {
     navigator.clipboard.writeText(text)
   }
 
+  const removePassword = (index) => {
+    const updatedPasswords = [...passwordArray]
+    updatedPasswords.splice(index, 1)
+    setpasswordArray(updatedPasswords)
+    localStorage.setItem("passwords", JSON.stringify(updatedPasswords))
+    return updatedPasswords
+  }
+
+  const deletePassword = (index) => {
+    removePassword(index)
+    toast.success('Password deleted!', {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
+
+  const editPassword = (index) => {
+    const passwordToEdit = passwordArray[index]
+    setform(passwordToEdit)
+    removePassword(index)
+  }
+
   return (
     <div>
       <ToastContainer
@@ -92,14 +146,13 @@ const Manager = () => {
         draggable
         pauseOnHover={false}
         theme="dark"
-        transition="Bounce"
+        transition={Bounce}
       />
-      <ToastContainer />
       <div className="heading">
         <h1 className='text-3xl tracking-wider font-bold text-center my-4'>PassMan - Your Own Password Manager</h1>
       </div>
       <div className="inputcontainer w-[70vw] mx-auto relative flex flex-col items-center justify-center">
-        <input name='site' value={form.site} onChange={handleChange} type="text" minLength={3} className='border-2 w-[99%] border-gray-500 p-3 m-2 text-white rounded-lg' placeholder="Enter URL" />
+        <input name='site' value={form.site} onChange={handleChange} type="url" minLength={3} className='border-2 w-[99%] border-gray-500 p-3 m-2 text-white rounded-lg' placeholder="Enter URL" />
         <div className="flex w-[70vw] relative justify-center">
           <input name='username' value={form.username} onChange={handleChange} type="text" minLength={3} maxLength={20} className='border-2 w-[50%] border-gray-500 p-3 m-2 text-white rounded-lg' placeholder="Enter Username" />
           <div className="relative w-[50%]">
@@ -110,18 +163,12 @@ const Manager = () => {
           </div>
         </div>
         <button
-          onClick={savePassword}
-          className='flex cursor-pointer font-bold items-center justify-center gap-2 bg-white text-black p-2 px-3 m-2 rounded-xl'
-          onMouseEnter={() => playerRef.current?.playFromBeginning()}
-          onFocus={() => playerRef.current?.playFromBeginning()}
+          onClick={() => { savePassword()}}
+          className=' flex cursor-pointer font-bold items-center justify-center gap-2 bg-white text-black p-2 px-3 m-2 rounded-xl'
         >
-          Add Password
+          Save Password
           <span>
-            <Player
-              ref={playerRef}
-              icon={ICON}
-              size={30}
-            />
+            <AnimatedPlayer icon={ADD_ICON} size={30} />
           </span>
         </button>
       </div>
@@ -140,6 +187,7 @@ const Manager = () => {
                   <th className=' p-3 w-4/9'>Site</th>
                   <th className=' p-3 w-2/9'>Username</th>
                   <th className=' p-3 w-2/9'>Password</th>
+                  <th className=' p-3 w-1/9'>Actions</th>
                 </tr>
               </thead>
               <tbody className='text-white text-center'>
@@ -148,6 +196,11 @@ const Manager = () => {
                     <td className=' underline p-3 relative'><div className='flex justify-center items-center'><a href={item.site}>{item.site}</a><span onClick={() => copyToClipboard(item.site)} aria-label='Copy' className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
                     <td className=' p-3'><div className='flex justify-center items-center'> {item.username}<span onClick={() => copyToClipboard(item.username)} aria-label='Copy' className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
                     <td className=' p-3'><div className='flex justify-center items-center'>{item.password}<span onClick={() => copyToClipboard(item.password)} aria-label='Copy' className='inline-block w-10 align-middle'><CopyAnimation /></span></div></td>
+                    <td className=' p-3'><div className='flex justify-center items-center gap-1.5'>
+                      <span onClick={() => editPassword(index)}><AnimatedPlayer icon={EDIT_ICON} size={26} /></span>
+                      <span onClick={() => deletePassword(index)}><AnimatedPlayer icon={DELETE_ICON} size={24} /></span>
+                    </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
